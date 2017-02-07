@@ -20,8 +20,6 @@
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
     "babel-preset-react-app": "^2.0.1",
-    "css-loader": "^0.26.1",
-    "style-loader": "^0.13.1",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^1.16.3"
   }

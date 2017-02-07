@@ -1,17 +1,14 @@
-import React from 'react';
-import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
+import React, {Component} from 'react';
+import {Router, Route, IndexRoute, hashHistory} from 'react-router';
 import AppShell from './AppShell';
+import Main from './Main';
 
-class App extends React.Component {
-  render () {
-    return (
-       <MuiThemeProvider>
-        <AppShell>
-          Hello World!
-        </AppShell>
-      </MuiThemeProvider>
-    );
-  }
-};
-
-export default App;
+export default function App() {
+  return (
+    <Router history={hashHistory}>
+      <Route path="/" component={AppShell}>
+        <IndexRoute component={Main}/>
+      </Route>
+    </Router>
+  );
+}
