@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 import {Avatar} from 'material-ui';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
-import AvatarIcon from 'material-ui/svg-icons/action/account-circle';
+import * as Icons from './Icons';
 import users from '../data/users.json'
 
 const style = {
@@ -17,7 +17,7 @@ class User extends Component {
 				<CardHeader
 					title={`${this.props.name}`}
 					subtitle={this.props.email}
-					avatar={<Avatar icon={<AvatarIcon/>}/>}
+					avatar={<Avatar icon={<Icons.Avatar/>}/>}
 				/>
 				</Card>
 			</Link>

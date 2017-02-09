@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import {hashHistory, Link} from 'react-router';
 import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
 import {Drawer, AppBar, MenuItem} from 'material-ui';
-import MainIcon from 'material-ui/svg-icons/navigation/apps';
-import UserIcon from 'material-ui/svg-icons/social/people';
-import ContactIcon from 'material-ui/svg-icons/communication/contacts';
+import * as Icons from './Icons';
 
 const style = {
   width: '90%',
@@ -41,19 +39,19 @@ class AppShell extends Component {
             onRequestChange={this.handleRequestChange}>
               <MenuItem 
                 primaryText={'Main'}
-                leftIcon={<MainIcon/>}
+                leftIcon={<Icons.Main/>}
                 containerElement={<Link to={'/'}/>}
                 onTouchTap={this.handleToggleDrawer}
               />
               <MenuItem 
                 primaryText={'Users'}
-                leftIcon={<UserIcon/>}
+                leftIcon={<Icons.Users/>}
                 containerElement={<Link to={'/users'}/>}
                 onTouchTap={this.handleToggleDrawer}
               />
               <MenuItem 
                 primaryText={'Contact'}
-                leftIcon={<ContactIcon/>}
+                leftIcon={<Icons.Contact/>}
                 containerElement={<Link to={'/contact'}/>}
                 onTouchTap={this.handleToggleDrawer}
               />
