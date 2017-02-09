@@ -4,6 +4,7 @@ import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
 import {Drawer, AppBar, MenuItem} from 'material-ui';
 import MainIcon from 'material-ui/svg-icons/navigation/apps';
 import UserIcon from 'material-ui/svg-icons/social/people';
+import ContactIcon from 'material-ui/svg-icons/communication/contacts';
 
 const style = {
   width: '90%',
@@ -48,6 +49,12 @@ class AppShell extends Component {
                 primaryText={'Users'}
                 leftIcon={<UserIcon/>}
                 containerElement={<Link to={'/users'}/>}
+                onTouchTap={this.handleToggleDrawer}
+              />
+              <MenuItem 
+                primaryText={'Contact'}
+                leftIcon={<ContactIcon/>}
+                containerElement={<Link to={'/contact'}/>}
                 onTouchTap={this.handleToggleDrawer}
               />
           </Drawer>

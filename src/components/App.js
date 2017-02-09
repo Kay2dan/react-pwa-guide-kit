@@ -3,6 +3,7 @@ import {Router, Route, IndexRoute, hashHistory} from 'react-router';
 import AppShell from './AppShell';
 import Main from './Main';
 import Users from './Users';
+import Contact from './Contact';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
         <IndexRoute component={Main}/>
         <Route path="users" component={Users}/>
         <Route path="users/:id" component={Users}/>
+        <Route path="contact" component={Contact}/>
       </Route>
     </Router>
   );
