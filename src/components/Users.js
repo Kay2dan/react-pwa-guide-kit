@@ -43,21 +43,25 @@ class Users extends Component {
 	}
 
 	render() {
-		const userItems = () => {
+		const users = () => {
 			if (this.state.users) {
-				if (!this.props.params.id) {
-					return Object.keys(this.state.users).map((id, i) => {
-						return <User key={`${id}-${i}`} id={id} {...this.state.users[id]}/>;
-					});
+				const user = (id, i) => (
+					<User key={`${id}-${i}`} id={id} {...this.state.users[id]}/>
+				);
+
+				if (this.props.params.id) {
+					return user(this.props.params.id, 0);
 				} else {
-					return <User id={this.props.params.id} {...users[this.props.params.id]}/>;
+					return Object.keys(this.state.users).map((id, i) => {
+						return user(id, i);
+					});
 				}
 			}
 		}
 
 		return (
 			<div>
-				{userItems()}
+				{users()}
 			</div>
 		);
 	}
