@@ -3,6 +3,13 @@ import {hashHistory, Link} from 'react-router';
 import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
 import {Drawer, AppBar, MenuItem} from 'material-ui';
 import MainIcon from 'material-ui/svg-icons/navigation/apps';
+import UserIcon from 'material-ui/svg-icons/social/people';
+
+const style = {
+  width: '90%',
+  margin: 'auto',
+  marginTop: '30px'
+};
 
 class AppShell extends Component {
   constructor(props) {
@@ -37,8 +44,14 @@ class AppShell extends Component {
                 containerElement={<Link to={'/'}/>}
                 onTouchTap={this.handleToggleDrawer}
               />
+              <MenuItem 
+                primaryText={'Users'}
+                leftIcon={<UserIcon/>}
+                containerElement={<Link to={'/users'}/>}
+                onTouchTap={this.handleToggleDrawer}
+              />
           </Drawer>
-          <div id="content">
+          <div id="content" style={style}>
             {this.props.children}
           </div>
         </div>

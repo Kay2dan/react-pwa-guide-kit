@@ -1,0 +1,14 @@
+{
+	"jimmy-moon": {
+		"name": "Jimmy Moon",
+    "email": "jimmy@moon.com"
+	},
+	"jane-yoo": {
+		"name": "Jane Yoo",
+    "email": "jane@yoo.com"
+	},
+	"john-doh": {
+		"name": "John Doh",
+    "email": "john@doh.com"
+	}
+}
