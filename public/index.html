@@ -11,4 +11,11 @@
     <div id="app"></div>
   </body>
   <script type="text/javascript" src="main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js');
+      });
+    }
+</script>
 </html>
