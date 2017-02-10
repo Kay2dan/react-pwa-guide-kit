@@ -1,7 +1,6 @@
 'use strict';
 
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = ({prod = false} = {}) => {
@@ -23,24 +22,10 @@ module.exports = ({prod = false} = {}) => {
       }]
     },
     plugins: [
-      new HtmlWebpackPlugin({
-        inject: true,
-        template: './public/index.html',
-        favicon: './public/favicon.ico',
-        minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          keepClosingSlash: true
-        }
-			}),
       new CopyWebpackPlugin([{
         context: './public',
         from: '*.+(png|json)'
-      }])
+      }]),
     ],
     devServer: {
       contentBase: './public',
