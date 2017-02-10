@@ -6,7 +6,8 @@
   "author": "ragingwind",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "build": "rm -rf build && webpack --env.prod --progress --profile"
   },
   "dependencies": {
     "html-webpack-plugin": "^2.28.0",
