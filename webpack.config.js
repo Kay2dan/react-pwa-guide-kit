@@ -1,9 +1,9 @@
 'use strict';
 
-const devserver = process.argv[1].includes('webpack-dev-server');
 const path = require('path');
+const isWebpack = require('is-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const SWPrecacheWebpackPlugin = devserver ? require('sw-precache-webpack-dev-plugin') : require('sw-precache-webpack-plugin');
+const SWPrecacheWebpackPlugin = require(`sw-precache-webpack-${isWebpack ? '' : 'dev-'}plugin`);
 
 module.exports = ({prod = false} = {}) => {
   process.env.NODE_ENV = prod ? 'production' : 'development';
