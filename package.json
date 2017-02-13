@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "rm -rf build && webpack --env.prod --progress --profile"
+    "build": "rm -rf build && webpack --env.prod"
   },
   "dependencies": {
     "copy-webpack-plugin": "^4.0.1",

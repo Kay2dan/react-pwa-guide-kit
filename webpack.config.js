@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const {optimize} = require('webpack');
 const isWebpack = require('is-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const SWPrecacheWebpackPlugin = require(`sw-precache-webpack-${isWebpack ? '' : 'dev-'}plugin`);
@@ -10,7 +11,8 @@ module.exports = ({prod = false} = {}) => {
 
   return {
     entry: {
-      main: ['./src/index.js']
+      main: ['./src/index.js'],
+      vendor: ['react', 'react-dom'],
     },
     output: {
       path: path.resolve(__dirname, './build'),
@@ -41,6 +43,10 @@ module.exports = ({prod = false} = {}) => {
         }],
         logger: function () {},
         filename: 'sw.js'
+      }),
+      new optimize.CommonsChunkPlugin({
+        name: "vendor",
+        minChunks: Infinity
       })
     ],
     devServer: {
