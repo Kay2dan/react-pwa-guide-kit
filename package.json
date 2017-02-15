@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "rm -rf build && webpack --env.production"
+    "build": "rm -rf build && webpack --env.production",
+    "deploy": "yarn run build && firebase deploy"
   },
   "dependencies": {
     "html-webpack-plugin": "^2.28.0",
