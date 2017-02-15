@@ -1,18 +1,19 @@
 'use strict';
 
 const path = require('path');
-const {optimize} = require('webpack');
-const isWebpack = require('is-webpack');
+const {LoaderOptionsPlugin, DefinePlugin, optimize} = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const SWPrecacheWebpackPlugin = require(`sw-precache-webpack-${isWebpack ? '' : 'dev-'}plugin`);
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const SWPrecacheWebpackPlugin = require(`sw-precache-webpack-plugin`);
+const SWPrecacheWebpackDevPlugin = require(`sw-precache-webpack-dev-plugin`);
+const isWebpack = require('is-webpack');
 
-module.exports = ({prod = false} = {}) => {
-  process.env.NODE_ENV = prod ? 'production' : 'development';
-
-  return {
+module.exports = ({production = false} = {}) => {
+  process.env.NODE_ENV = production ? 'production' : 'development';
+  
+  const webpackConfig = {
     entry: {
-      main: ['./src/index.js'],
-      vendor: ['react', 'react-dom'],
+      main: ['./src/index.js']
     },
     output: {
       path: path.resolve(__dirname, './build'),
@@ -30,7 +31,23 @@ module.exports = ({prod = false} = {}) => {
         context: './public',
         from: '*.*'
       }]),
-      new SWPrecacheWebpackPlugin({
+      new HtmlWebpackPlugin(Object.assign({
+        inject: true,
+        template: './public/index.html',
+        favicon: './public/favicon.ico', 
+      }, production ? {
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true
+        }
+      } : {})),
+      new (isWebpack ? SWPrecacheWebpackPlugin : SWPrecacheWebpackDevPlugin)({
         cacheId: require('./package.json').name,
         stripPrefix: './build',
         staticFileGlobs: [
@@ -42,11 +59,8 @@ module.exports = ({prod = false} = {}) => {
           urlPattern: /https?:\/\/fonts.+/
         }],
         logger: function () {},
-        filename: 'sw.js'
-      }),
-      new optimize.CommonsChunkPlugin({
-        name: "vendor",
-        minChunks: Infinity
+        filename: 'sw.js',
+        minify: true
       })
     ],
     devServer: {
@@ -56,4 +70,19 @@ module.exports = ({prod = false} = {}) => {
       port: 8080
     }
   };
+
+  if (production) {
+    webpackConfig.plugins = webpackConfig.plugins.concat([
+       new LoaderOptionsPlugin({
+        minimize: true,
+        debug: false
+      }),
+      new optimize.UglifyJsPlugin(),
+      new DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      })
+    ]);
+  }
+
+  return webpackConfig;
 };
