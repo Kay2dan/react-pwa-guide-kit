@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 import {Avatar} from 'material-ui';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import * as Icons from './Icons';
-import users from '../data/users.json'
+import {database} from 'firebase';
 
 const style = {
 	marginBottom: '0.5em',
@@ -32,14 +32,30 @@ User.propTypes = {
 };
 
 class Users extends Component {
+	constructor(props) {
+		super(props);
+
+		this.users = {};
+
+		this.state = {
+			users: this.users
+		};
+	}
+
 	componentWillMount() {
-		this.setState({
-			users: users
+		this.ref = database().ref('users');
+		this.ref.on('child_added', s => {
+			this.users[s.key] = s.val();
+			this.setState(this.users);
 		});
 	}
 
+	componentWillUnmount() {
+		this.ref.off();
+	}
+
 	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.params.id !== this.props.params.id;
+		return this.state !== nextState || nextProps.params.id !== this.props.params.id;
 	}
 
 	render() {
