@@ -3,7 +3,6 @@ import {Link} from 'react-router';
 import {Avatar} from 'material-ui';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import * as Icons from './Icons';
-import {database} from 'firebase';
 
 const style = {
 	marginBottom: '0.5em',
@@ -35,23 +34,26 @@ class Users extends Component {
 	constructor(props) {
 		super(props);
 
-		this.users = {};
-
 		this.state = {
-			users: this.users
+			users: {}
 		};
 	}
 
 	componentWillMount() {
-		this.ref = database().ref('users');
-		this.ref.on('child_added', s => {
-			this.users[s.key] = s.val();
-			this.setState(this.users);
-		});
-	}
+		fetch('https://react-pwa-hello-world.firebaseio.com/users.json').then(res => {
+			if (res.status !== 200) {
+				throw new Error(res.toString());
+			}
 
-	componentWillUnmount() {
-		this.ref.off();
+			res.json().then(data => {
+				this.setState({
+					users: data
+				});
+			});
+		})
+		.catch(function(err) {  
+    	console.log('Fetch Error :-S', err);  
+  	});
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {

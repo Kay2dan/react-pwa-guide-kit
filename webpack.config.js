@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SWPrecacheWebpackPlugin = require(`sw-precache-webpack-plugin`);
 const SWPrecacheWebpackDevPlugin = require(`sw-precache-webpack-dev-plugin`);
 const isWebpack = require('is-webpack');
+const pkg = require('./package.json');
 
 module.exports = ({production = false} = {}) => {
   process.env.NODE_ENV = production ? 'production' : 'development';
@@ -48,15 +49,14 @@ module.exports = ({production = false} = {}) => {
         }
       } : {})),
       new (isWebpack ? SWPrecacheWebpackPlugin : SWPrecacheWebpackDevPlugin)({
-        cacheId: require('./package.json').name,
+        cacheId: `${pkg.name}-${pkg.version}`,
         stripPrefix: './build',
         staticFileGlobs: [
           path.join(path.resolve(__dirname, './build'), '**/*')
         ],
-        maximumFileSizeToCacheInBytes: 4194304,
         runtimeCaching: [{
-          handler: 'cacheFirst',
-          urlPattern: /https?:\/\/fonts.+/
+          urlPattern: /https:\/\/.+.firebaseio.com/,
+          handler: 'networkFirst'
         }],
         logger: function () {},
         filename: 'sw.js',
