@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 import {Avatar, Dialog, FlatButton, TextField, FloatingActionButton} from 'material-ui';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
+import UsersDatabase from '../services/UsersDatabase';
 import * as Icons from './Icons';
 
 const style = {
@@ -41,24 +42,17 @@ class Users extends Component {
 	constructor(props) {
 		super(props);
 
-		this.users = {};
+		this.store = new UsersDatabase();
 
 		this.state = {
-			users: this.users,
+			users: this.store.data(),
 			dialog: false
 		};
 	}
 
 	componentWillMount() {
-		fetch('https://react-pwa-hello-world.firebaseio.com/users.json?orderBy="name"').then(res => {
-			if (res.status !== 200) {
-				throw new Error(res.statusText);
-			}
-
-			res.json().then(users => {
-				this.users = users,
-				this.setState({users: this.users});
-			});
+		this.store.get().then(users => {
+			this.setState({users});
 		}).catch(function(err) {  
 			console.log(`Fetch Error ${err.toString()}`);
 		});
@@ -73,30 +67,20 @@ class Users extends Component {
 	handleCloseDialog = () => this.setState({dialog: false})
 
 	handleSubmit = () => {
-		const form = {
+		const user = {
 			name: this.nameText.getValue(),
 			email: this.emailText.getValue()
 		};
 
-		if (!form.name || !form.email) {
+		if (!user.name || !user.email) {
 			this.handleCloseDialog();
 			return;
 		}
 
-		fetch('https://react-pwa-hello-world.firebaseio.com/users.json', {
-			method: 'POST',
-			body: JSON.stringify(form)
-		}).then(res => {
-			if (res.status !== 200) {
-				throw new Error(res.statusText);
-			}
-
-			res.json().then(data => {
-				this.users[data.name] = form;
-				this.setState({
-					users: this.users,
-					dialog: false
-				});
+		this.store.post(user).then(users => {
+			this.setState({
+				users: users,
+				dialog: false
 			});
 		}).catch(function(err) {
 			console.log(`Fetch Error ${err.toString()}`);
