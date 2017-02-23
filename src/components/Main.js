@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {Card, CardHeader, CardText} from 'material-ui/Card';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
 
 class Main extends Component {
   render () {
     return (
       <div>
         <Card>
-          <CardHeader><h3>Hello! World</h3></CardHeader>
+          <CardTitle title="Hello! World"/>
           <CardText>
             You will have a work:
             <ul>

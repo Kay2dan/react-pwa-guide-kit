@@ -50,9 +50,9 @@ class AppShell extends Component {
                 onTouchTap={this.handleToggleDrawer}
               />
               <MenuItem 
-                primaryText={'Contact'}
-                leftIcon={<Icons.Contact/>}
-                containerElement={<Link to={'/contact'}/>}
+                primaryText={'Notification'}
+                leftIcon={<Icons.Notification/>}
+                containerElement={<Link to={'/notification'}/>}
                 onTouchTap={this.handleToggleDrawer}
               />
           </Drawer>
