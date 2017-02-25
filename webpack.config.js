@@ -8,10 +8,16 @@ const SWPrecacheWebpackPlugin = require(`sw-precache-webpack-plugin`);
 const SWPrecacheWebpackDevPlugin = require(`sw-precache-webpack-dev-plugin`);
 const isWebpack = require('is-webpack');
 const pkg = require('./package.json');
+const dotenvSafe = require('dotenv-safe').load();
 
 module.exports = ({production = false} = {}) => {
   process.env.NODE_ENV = production ? 'production' : 'development';
-  
+
+  const firebaseConfig = JSON.stringify({
+    apiKey: process.env.FIREBASE_API_KEY,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID
+  });
+
   const webpackConfig = {
     entry: {
       main: ['./src/index.js']
@@ -28,9 +34,19 @@ module.exports = ({production = false} = {}) => {
       }]
     },
     plugins: [
+      new DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        FIREBASE_CONFIG: firebaseConfig
+      }),
       new CopyWebpackPlugin([{
         context: './public',
         from: '*.*'
+      }, {
+        from: './src/firebase-messaging-sw.js',
+        to: 'firebase-messaging-sw.js',
+        transform: (content, from) => {
+          return content.toString().replace(/FIREBASE_CONFIG/, firebaseConfig);
+        }
       }]),
       new HtmlWebpackPlugin(Object.assign({
         inject: true,
@@ -77,10 +93,7 @@ module.exports = ({production = false} = {}) => {
         minimize: true,
         debug: false
       }),
-      new optimize.UglifyJsPlugin(),
-      new DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-      })
+      new optimize.UglifyJsPlugin()
     ]);
   }
 

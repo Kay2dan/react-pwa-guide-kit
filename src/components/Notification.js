@@ -6,12 +6,10 @@ import FirebaseMessaging from '../services/FirebaseMessaging';
 class Notification extends Component {
   constructor(props) {
     super(props);
-
-    this.message = new FirebaseMessaging({
-      apiKey: "AIzaSyBfdmWiLAgIPCN-LADPTQtqD54TWdMzmZk",
-      messagingSenderId: "1075172756206",
+    
+    this.message = new FirebaseMessaging(Object.assign(FIREBASE_CONFIG, {
       handleMessage: this.handleMessage.bind(this)
-    });
+    }));
 
     this.state = {
       token: '',

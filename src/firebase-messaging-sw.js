@@ -1,12 +1,7 @@
 importScripts('https://www.gstatic.com/firebasejs/3.5.2/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/3.5.2/firebase-messaging.js');
 
-const config = {
-  apiKey: "AIzaSyBfdmWiLAgIPCN-LADPTQtqD54TWdMzmZk",
-  messagingSenderId: "1075172756206"
-};
-
-firebase.initializeApp(config);
+firebase.initializeApp(FIREBASE_CONFIG);
 
 const messaging = firebase.messaging();
 
@@ -16,7 +11,7 @@ const messaging = firebase.messaging();
 messaging.setBackgroundMessageHandler(({data} = {}) => {
   const title = data.title || 'Title';
   const opts = Object.assign({
-    body: 'Body'
+    body: data.body || 'Body'
   }, data);
 
   return self.registration.showNotification(title, opts);
