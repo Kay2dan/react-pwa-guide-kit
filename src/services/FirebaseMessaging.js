@@ -5,8 +5,11 @@ class FirebaseMessaging {
     config = Object.assign({
       handleMessage: () => {}
     }, config);
-    
-    this.app = firebase.initializeApp(config);
+
+    if (!FirebaseMessaging.defaultApp) {
+      FirebaseMessaging.defaultApp = firebase.initializeApp(config);
+    }
+
     this.handleMessage = config.handleMessage;
   }
 
@@ -20,5 +23,7 @@ class FirebaseMessaging {
     return messaging.requestPermission().then(() => messaging.getToken());
   }
 }
+
+FirebaseMessaging.defaultApp = undefined;
 
 export default FirebaseMessaging;
