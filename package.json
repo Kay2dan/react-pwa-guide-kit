@@ -6,8 +6,8 @@
   "author": "ragingwind",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "rm -rf build && webpack --env.production",
+    "start": "NODE_ENV=development webpack-dev-server",
+    "build": "rm -rf build && NODE_ENV=production webpack",
     "deploy": "yarn run build && firebase deploy"
   },
   "dependencies": {
