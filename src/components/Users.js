@@ -22,7 +22,7 @@ class User extends Component {
 			<Link to={`/users/${this.props.id}`}>
 				<Card style={style.card}>
 				<CardHeader
-					title={`${this.props.name}`}
+					title={this.props.name}
 					subtitle={this.props.email}
 					avatar={<Avatar icon={<Icons.Avatar/>}/>}
 				/>
