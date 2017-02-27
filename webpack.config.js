@@ -3,6 +3,7 @@
 const path = require('path');
 const {LoaderOptionsPlugin, DefinePlugin, optimize} = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isWebpack = require('is-webpack');
 const SWPrecacheWebpackPlugin = isWebpack ? require('sw-precache-webpack-plugin') : require('sw-precache-webpack-plugin');
 const pkg = require('./package.json');
@@ -23,7 +24,7 @@ module.exports = ({production = false}) => {
     },
     output: {
       path: path.resolve(__dirname, './build'),
-			filename: '[name].js'
+			filename: '[name].[chunkhash].js'
     },
     module: {
       loaders: [{
@@ -62,8 +63,24 @@ module.exports = ({production = false}) => {
         minify: production
       }),
       new optimize.CommonsChunkPlugin({
-        name: ['vendor']
-      })
+        name: ['vendor', 'manifest']
+      }),
+      new HtmlWebpackPlugin(Object.assign({
+        inject: true,
+        template: './public/index.html',
+        favicon: './public/favicon.ico', 
+      }, production ? {
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true
+        }
+      } : {}))
     ],
     devServer: {
       contentBase: './public',
