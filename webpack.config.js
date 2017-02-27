@@ -16,7 +16,8 @@ module.exports = () => {
 
   const webpackConfig = {
     entry: {
-      main: ['./src/index.js']
+      main: ['./src/index.js'],
+      vendor: ['react', 'react-dom', 'react-router', 'material-ui', 'firebase']
     },
     output: {
       path: path.resolve(__dirname, './build'),
@@ -55,6 +56,9 @@ module.exports = () => {
         }],
         logger: function () {},
         filename: 'sw.js'
+      }),
+      new optimize.CommonsChunkPlugin({
+        name: ['vendor']
       })
     ],
     devServer: {
