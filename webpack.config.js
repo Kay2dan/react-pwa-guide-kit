@@ -5,17 +5,19 @@ const {LoaderOptionsPlugin, DefinePlugin, optimize} = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isWebpack = require('is-webpack');
-const SWPrecacheWebpackPlugin = isWebpack ? require('sw-precache-webpack-plugin') : require('sw-precache-webpack-plugin');
+const SWPrecacheWebpackPlugin = isWebpack ? require('sw-precache-webpack-plugin') : require('sw-precache-webpack-dev-plugin');
 const pkg = require('./package.json');
 const dotenvSafe = require('dotenv-safe').load();
 
-module.exports = ({production = false}) => {
+module.exports = ({production = false} = {}) => {
   process.env.NODE_ENV = production ? 'production' : 'development';
 
   const firebaseConfig = JSON.stringify({
     apiKey: process.env.FIREBASE_API_KEY,
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID
   });
+
+  const sourceMap = production ? 'cheap-module-source-map' : 'source-map';
 
   const webpackConfig = {
     entry: {
@@ -33,6 +35,7 @@ module.exports = ({production = false}) => {
         loaders: 'babel-loader'
       }]
     },
+    devtool: sourceMap,
     plugins: [
       new DefinePlugin({
         FIREBASE_CONFIG: firebaseConfig,
@@ -96,7 +99,9 @@ module.exports = ({production = false}) => {
         minimize: true,
         debug: false
       }),
-      new optimize.UglifyJsPlugin()
+      new optimize.UglifyJsPlugin({
+        sourceMap: sourceMap
+      })
     ]);
   }
 
