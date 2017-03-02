@@ -23,11 +23,9 @@ class Users extends Component {
 	}
 
 	componentWillMount() {
-		usersDatabase().get().then(users => {
-			this.setState({
-				users: usersDatabase().data()
-			});
-		}).catch(err => {
+		usersDatabase().get()
+			.then(users => this.setState({users}))
+			.catch(err => {
 			console.log(err);
 		});
 	}

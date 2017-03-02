@@ -19,18 +19,11 @@ class User extends Component {
 	componentWillMount() {
 		if (this.state.id && !this.state.user) {
 			const user = usersDatabase().data(this.state.id);
-			
-			if (user) {
-				this.setState({user});
-			} else {
-				usersDatabase().get().then(users => {
-					this.setState({
-						user: usersDatabase().data(this.state.id)
-					});
-				}).catch(err => {
-					console.log(err);
-				});
-			}
+			const get = user ? Promise.resolve(user) : usersDatabase().get();
+
+			get.then(() => {
+				this.setState({user: usersDatabase().data(this.state.id)})
+			});
 		}		
 	}
 
