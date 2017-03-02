@@ -2661,7 +2661,7 @@ oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
 
-object-assign@^4.0.1, object-assign@^4.1.0:
+object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
@@ -2837,6 +2837,18 @@ portfinder@^1.0.9:
     async "^1.5.2"
     debug "^2.2.0"
     mkdirp "0.5.x"
+
+preload-webpack-plugin@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/preload-webpack-plugin/-/preload-webpack-plugin-1.2.0.tgz#d8581794133aaa275307c1c975050bc550b13059"
+  dependencies:
+    object-assign "^4.1.1"
+
+"preload-webpack-plugin@https://github.com/GoogleChrome/preload-webpack-plugin.git":
+  version "1.2.0"
+  resolved "https://github.com/GoogleChrome/preload-webpack-plugin.git#d1239086324afee4a24c8724f475bc509e3bea0a"
+  dependencies:
+    object-assign "^4.1.1"
 
 preserve@^0.2.0:
   version "0.2.0"

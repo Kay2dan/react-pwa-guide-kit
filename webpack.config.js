@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isWebpack = require('is-webpack');
 const SWPrecacheWebpackPlugin = isWebpack ? require('sw-precache-webpack-plugin') : require('sw-precache-webpack-dev-plugin');
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const pkg = require('./package.json');
 const dotenvSafe = require('dotenv-safe').load();
 
@@ -18,6 +19,7 @@ module.exports = ({production = false} = {}) => {
   });
 
   const sourceMap = production ? 'cheap-module-source-map' : 'source-map';
+  const chunkName = production ? '[name].[chunkhash].js' : '[name].js';
 
   const webpackConfig = {
     entry: {
@@ -26,8 +28,8 @@ module.exports = ({production = false} = {}) => {
     },
     output: {
       path: path.resolve(__dirname, './build'),
-			filename: '[name].[chunkhash].js',
-      chunkFilename: '[name].[chunkhash].js'
+			filename: chunkName,
+      chunkFilename: chunkName
     },
     module: {
       loaders: [{
@@ -42,8 +44,14 @@ module.exports = ({production = false} = {}) => {
     },
     devtool: sourceMap,
     plugins: [
+      new optimize.CommonsChunkPlugin({
+        name: ['vendor', 'manifest']
+      }),
+      new DefinePlugin({
+        FIREBASE_CONFIG: firebaseConfig,
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      }),
       new HtmlWebpackPlugin(Object.assign({
-        inject: true,
         template: './public/index.html',
         favicon: './public/favicon.ico', 
       }, production ? {
@@ -58,13 +66,7 @@ module.exports = ({production = false} = {}) => {
           minifyJS: true
         }
       } : {})),
-      new optimize.CommonsChunkPlugin({
-        name: ['vendor']
-      }),
-      new DefinePlugin({
-        FIREBASE_CONFIG: firebaseConfig,
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-      }),
+      new PreloadWebpackPlugin(),
       new CopyWebpackPlugin([{
         context: './public',
         from: '*.*'
