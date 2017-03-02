@@ -7,8 +7,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isWebpack = require('is-webpack');
 const SWPrecacheWebpackPlugin = isWebpack ? require('sw-precache-webpack-plugin') : require('sw-precache-webpack-dev-plugin');
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
-const pkg = require('./package.json');
 const dotenvSafe = require('dotenv-safe').load();
+const pkg = require('./package.json');
 
 module.exports = ({production = false} = {}) => {
   process.env.NODE_ENV = production ? 'production' : 'development';
