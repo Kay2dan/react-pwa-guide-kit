@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Card, CardTitle, CardText} from 'material-ui/Card';
 
-class Main extends Component {
+class Greeting extends Component {
   render () {
     return (
       <div>
@@ -23,4 +23,4 @@ class Main extends Component {
   }
 };
 
-export default Main;
+export default Greeting;

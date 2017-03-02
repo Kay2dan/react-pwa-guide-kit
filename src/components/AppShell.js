@@ -38,8 +38,8 @@ class AppShell extends Component {
             open={this.state.open}
             onRequestChange={this.handleRequestChange}>
               <MenuItem 
-                primaryText={'Main'}
-                leftIcon={<Icons.Main/>}
+                primaryText={'Greeting'}
+                leftIcon={<Icons.Greeting/>}
                 containerElement={<Link to={'/'}/>}
                 onTouchTap={this.handleToggleDrawer}
               />

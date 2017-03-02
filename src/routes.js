@@ -12,7 +12,7 @@ const routes = {
   childRoutes: [{
     getIndexRoute: (_, cb) => {
       cb(null, {
-        getComponent: (_, cb) => {import('./components/Main').then(load(cb))}
+        getComponent: (_, cb) => {import('./components/Greeting').then(load(cb))}
       })
     }
   }, {
