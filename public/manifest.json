@@ -1,6 +1,6 @@
 {
   "name": "Hello World with React and PWA ",
-  "short_name": "HelloWord with PWA",
+  "short_name": "Hello! PWA",
   "icons": [
     {
       "src": "icon-144x144.png",
