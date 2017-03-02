@@ -4,7 +4,7 @@ class UsersDatabase {
 		this.users = {};
 	}
 
-	data = () => this.users;
+	data = (id) => id ? this.users[id] : this.users;
 
 	get = () => {
 		return fetch(`${this.baseURL}?orderBy="name"`).then(res => {
@@ -33,4 +33,12 @@ class UsersDatabase {
 	}
 }
 
-export default UsersDatabase;
+let usersDatabaseSingleton = null;
+
+export default function () {
+	if (!usersDatabaseSingleton) {
+		usersDatabaseSingleton = new UsersDatabase();
+	}
+	
+	return usersDatabaseSingleton;
+}

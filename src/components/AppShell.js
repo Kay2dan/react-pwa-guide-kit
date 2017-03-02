@@ -26,7 +26,7 @@ class AppShell extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <div id="app-shell">
+        <div>
           <AppBar
             title={this.props.title}
             iconClassNameRight="muidocs-icon-navigation-expand-more"
@@ -57,7 +57,8 @@ class AppShell extends Component {
               />
           </Drawer>
           <div id="content" style={style}>
-            {this.props.children}
+            {/*{this.props.children}*/}
+            {React.cloneElement(this.props.children, {msg: 'Hello world'})}
           </div>
         </div>
       </MuiThemeProvider>

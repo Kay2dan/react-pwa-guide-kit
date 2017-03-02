@@ -21,22 +21,46 @@ module.exports = ({production = false} = {}) => {
 
   const webpackConfig = {
     entry: {
-      main: ['./src/index.js'],
+      main: ['./src/main.js'],
       vendor: ['react', 'react-dom', 'react-router', 'material-ui', 'firebase']
     },
     output: {
       path: path.resolve(__dirname, './build'),
-			filename: '[name].[chunkhash].js'
+			filename: '[name].[chunkhash].js',
+      chunkFilename: '[name].[chunkhash].js'
     },
     module: {
       loaders: [{
         test: /\.(js|jsx)$/,
         include: path.resolve(__dirname, './src'),
-        loaders: 'babel-loader'
+        loaders: 'babel-loader',
+        options: {
+          presets: [['es2015', {modules: false}], "react-app"],
+          plugins: ['syntax-dynamic-import']
+        }
       }]
     },
     devtool: sourceMap,
     plugins: [
+      new HtmlWebpackPlugin(Object.assign({
+        inject: true,
+        template: './public/index.html',
+        favicon: './public/favicon.ico', 
+      }, production ? {
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true
+        }
+      } : {})),
+      new optimize.CommonsChunkPlugin({
+        name: ['vendor']
+      }),
       new DefinePlugin({
         FIREBASE_CONFIG: firebaseConfig,
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
@@ -59,31 +83,12 @@ module.exports = ({production = false} = {}) => {
         ],
         runtimeCaching: [{
           urlPattern: /https:\/\/.+.firebaseio.com/,
-          handler: 'networkFirst'
+          handler: 'cacheFirst'
         }],
         logger: function () {},
         filename: 'sw.js',
         minify: production
-      }),
-      new optimize.CommonsChunkPlugin({
-        name: ['vendor', 'manifest']
-      }),
-      new HtmlWebpackPlugin(Object.assign({
-        inject: true,
-        template: './public/index.html',
-        favicon: './public/favicon.ico', 
-      }, production ? {
-        minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          keepClosingSlash: true,
-          minifyJS: true
-        }
-      } : {}))
+      })
     ],
     devServer: {
       contentBase: './public',

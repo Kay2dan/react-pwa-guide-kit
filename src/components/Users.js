@@ -2,59 +2,33 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 import {Avatar, Dialog, FlatButton, TextField, FloatingActionButton} from 'material-ui';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
-import UsersDatabase from '../services/UsersDatabase';
+import User from './User'
+import usersDatabase from '../services/UsersDatabase';
 import * as Icons from './Icons';
 
-const style = {
-	card: {
-		marginBottom: '0.5em'
-	},
-	fb: {
-		position: 'fixed',
-		bottom: '20px',
-		right: '20px'
-	}
-};
-
-class User extends Component {
-	render() {
-		return (
-			<Link to={`/users/${this.props.id}`}>
-				<Card style={style.card}>
-				<CardHeader
-					title={this.props.name}
-					subtitle={this.props.email}
-					avatar={<Avatar icon={<Icons.Avatar/>}/>}
-				/>
-				</Card>
-			</Link>
-		);
-	}
-}
-
-User.propTypes = {
-	id: React.PropTypes.string,
-	name: React.PropTypes.string,
-	email: React.PropTypes.string
+const fabStyle = {
+	position: 'fixed',
+	bottom: '20px',
+	right: '20px'
 };
 
 class Users extends Component {
 	constructor(props) {
 		super(props);
 
-		this.store = new UsersDatabase();
-
 		this.state = {
-			users: this.store.data(),
+			users: usersDatabase().data(),
 			dialog: false
 		};
 	}
 
 	componentWillMount() {
-		this.store.get().then(users => {
-			this.setState({users});
-		}).catch(function(err) {  
-			console.log(`Fetch Error ${err.toString()}`);
+		usersDatabase().get().then(users => {
+			this.setState({
+				users: usersDatabase().data()
+			});
+		}).catch(err => {
+			console.log(err);
 		});
 	}
 
@@ -77,33 +51,35 @@ class Users extends Component {
 			return;
 		}
 
-		this.store.post(user).then(users => {
+		usersDatabase().post(user).then(users => {
 			this.setState({
-				users: users,
+				users: usersDatabase().data(),
 				dialog: false
 			});
-		}).catch(function(err) {
-			console.log(`Fetch Error ${err.toString()}`);
+		}).catch(err => {
+			console.log(err);
 		});
 	}
 
 	render() {
 		const users = () => {
-			if (this.state.users) {
-				const user = (id, i) => (<User key={`${id}-${i}`} id={id} {...this.state.users[id]}/>);
-
-				if (this.props.params.id) {
-					return user(this.props.params.id, 0);
-				} else {
-					return Object.keys(this.state.users).map((id, i) => user(id, i));
-				}
+			if (!this.state.users) {
+				return;
 			}
-		}
+			
+			return Object.keys(this.state.users).map(id => {
+				return (
+					<Link key={id} to={`/users/${id}`}>
+						<User user={this.state.users[id]}/>
+					</Link>
+				);
+			});
+		};
 
 		return (
 			<div>
 				{users()}
-				<FloatingActionButton style={style.fb} onTouchTap={this.handleOpenDialog}>
+				<FloatingActionButton style={fabStyle} onTouchTap={this.handleOpenDialog}>
 					<Icons.ContentAdd/>
 				</FloatingActionButton>
 				<Dialog
