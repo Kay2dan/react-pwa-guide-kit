@@ -2838,15 +2838,9 @@ portfinder@^1.0.9:
     debug "^2.2.0"
     mkdirp "0.5.x"
 
-preload-webpack-plugin@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/preload-webpack-plugin/-/preload-webpack-plugin-1.2.0.tgz#d8581794133aaa275307c1c975050bc550b13059"
-  dependencies:
-    object-assign "^4.1.1"
-
-"preload-webpack-plugin@https://github.com/GoogleChrome/preload-webpack-plugin.git":
-  version "1.2.0"
-  resolved "https://github.com/GoogleChrome/preload-webpack-plugin.git#d1239086324afee4a24c8724f475bc509e3bea0a"
+preload-webpack-plugin@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/preload-webpack-plugin/-/preload-webpack-plugin-1.2.1.tgz#591c25fbbaee1a9fd95174b049f53272ed9622e9"
   dependencies:
     object-assign "^4.1.1"
 
