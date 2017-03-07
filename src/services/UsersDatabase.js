@@ -1,6 +1,6 @@
 class UsersDatabase {
 	constructor() {
-		this.baseURL = 'https://react-pwa-hello-world.firebaseio.com/users.json';
+		this.baseURL = FIREBASE_CONFIG.databaseURL;
 		this.users = {};
 	}
 

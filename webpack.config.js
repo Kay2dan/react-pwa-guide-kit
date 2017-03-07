@@ -15,7 +15,8 @@ module.exports = ({production = false} = {}) => {
 
   const firebaseConfig = JSON.stringify({
     apiKey: process.env.FIREBASE_API_KEY,
-    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    databaseURL: process.env.FIREBASE_DATABASE_URL
   });
 
   const sourceMap = production ? 'cheap-module-source-map' : 'source-map';
