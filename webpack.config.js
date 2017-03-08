@@ -13,14 +13,36 @@ const pkg = require('./package.json');
 module.exports = ({production = false} = {}) => {
   process.env.NODE_ENV = production ? 'production' : 'development';
 
-  const firebaseConfig = JSON.stringify({
-    apiKey: process.env.FIREBASE_API_KEY,
-    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-    databaseURL: process.env.FIREBASE_DATABASE_URL
-  });
+  const configs = {
+    build: path.resolve(__dirname, './build'),
+    src: path.resolve(__dirname, './src'),
+    sourceMap: production ? 'cheap-module-source-map' : false,
+    chunkName: production ? '[name].[chunkhash].js' : '[name].js'
+  };
 
-  const sourceMap = production ? 'cheap-module-source-map' : false;
-  const chunkName = production ? '[name].[chunkhash].js' : '[name].js';
+  const defined = {
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    FIREBASE_CONFIG: JSON.stringify({
+      apiKey: process.env.FIREBASE_API_KEY,
+      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      databaseURL: process.env.FIREBASE_DATABASE_URL
+    })
+  };
+
+  const replaceDefined = (content, from) => {
+    return content.toString().replace(/FIREBASE_CONFIG/, defined.FIREBASE_CONFIG);
+  };
+
+  const minify = production ? {
+    removeComments: true,
+    collapseWhitespace: true,
+    removeRedundantAttributes: true,
+    useShortDoctype: true,
+    removeEmptyAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    keepClosingSlash: true,
+    minifyJS: true
+  } : {};
 
   const webpackConfig = {
     entry: {
@@ -28,14 +50,14 @@ module.exports = ({production = false} = {}) => {
       vendor: ['react', 'react-dom', 'react-router', 'material-ui', 'firebase']
     },
     output: {
-      path: path.resolve(__dirname, './build'),
-			filename: chunkName,
-      chunkFilename: chunkName
+      path: configs.build,
+			filename: configs.chunkName,
+      chunkFilename: configs.chunkName
     },
     module: {
       loaders: [{
         test: /\.(js|jsx)$/,
-        include: path.resolve(__dirname, './src'),
+        include: configs.src,
         loaders: 'babel-loader',
         options: {
           presets: [['es2015', {modules: false}], "react-app"],
@@ -43,30 +65,18 @@ module.exports = ({production = false} = {}) => {
         }
       }]
     },
-    devtool: sourceMap,
+    devtool: configs.sourceMap,
     plugins: [
       new optimize.CommonsChunkPlugin({
         name: ['vendor', 'manifest']
       }),
-      new DefinePlugin({
-        FIREBASE_CONFIG: firebaseConfig,
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-      }),
+      new DefinePlugin(defined),
       new HtmlWebpackPlugin(Object.assign({
         template: './public/index.html',
         favicon: './public/favicon.ico', 
-      }, production ? {
-        minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          keepClosingSlash: true,
-          minifyJS: true
-        }
-      } : {})),
+      },{
+        minify
+      })),
       new PreloadWebpackPlugin(),
       new CopyWebpackPlugin([{
         context: './public',
@@ -74,15 +84,13 @@ module.exports = ({production = false} = {}) => {
       }, {
         from: './src/firebase-messaging-sw.js',
         to: 'firebase-messaging-sw.js',
-        transform: (content, from) => {
-          return content.toString().replace(/FIREBASE_CONFIG/, firebaseConfig);
-        }
+        transform: replaceDefined
       }]),
       new SWPrecacheWebpackPlugin({
         cacheId: `${pkg.name}-${pkg.version}`,
         stripPrefix: './build',
         staticFileGlobs: [
-          path.join(path.resolve(__dirname, './build'), '**/*')
+          path.join(configs.build, '**/*')
         ],
         runtimeCaching: [{
           urlPattern: /https:\/\/.+.firebaseio.com/,
