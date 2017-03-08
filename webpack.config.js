@@ -19,7 +19,7 @@ module.exports = ({production = false} = {}) => {
     databaseURL: process.env.FIREBASE_DATABASE_URL
   });
 
-  const sourceMap = production ? 'cheap-module-source-map' : 'source-map';
+  const sourceMap = production ? 'cheap-module-source-map' : false;
   const chunkName = production ? '[name].[chunkhash].js' : '[name].js';
 
   const webpackConfig = {
