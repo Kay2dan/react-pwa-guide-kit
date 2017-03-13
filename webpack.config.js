@@ -80,7 +80,9 @@ module.exports = ({production = false} = {}) => {
       },{
         minify
       })),
-      new PreloadWebpackPlugin(),
+      new PreloadWebpackPlugin({
+        fileBlacklist: [/\.map./]
+      }),
       new CopyWebpackPlugin([{
         context: './public',
         from: '*.*'
