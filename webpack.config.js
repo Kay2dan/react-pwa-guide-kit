@@ -13,10 +13,12 @@ const pkg = require('./package.json');
 module.exports = ({production = false} = {}) => {
   process.env.NODE_ENV = production ? 'production' : 'development';
 
-  const path = resolve(__dirname, './build');
+  const output = {
+    path: resolve(__dirname, './build'),
+    filename: production ? '[name].[chunkhash].js' : '[name].js',
+    chunkFilename: production ? '[name].[chunkhash].js' : '[name].js'
+  };
   const include = resolve(__dirname, './src');
-  const filename =  production ? '[name].[chunkhash].js' : '[name].js';
-  const chunkFilename = filename;
   const sourceMap =  production ? 'cheap-module-source-map' : false;
   const devtool = production ? 'cheap-module-source-map' : false;
 
@@ -30,8 +32,6 @@ module.exports = ({production = false} = {}) => {
   };
 
   const transform = c => c.toString().replace(/FIREBASE_CONFIG/, defined.FIREBASE_CONFIG);
-
-  const minChunks = m => m.resource && m.resource.includes('node_modules');
 
   const minify = production ? {
     removeComments: true,
@@ -49,7 +49,7 @@ module.exports = ({production = false} = {}) => {
       main: ['./src/main.js'],
       vendor: ['react', 'react-dom', 'react-router', 'material-ui', 'firebase']
     },
-    output: {path, filename, chunkFilename},
+    output,
     module: {
       loaders: [{
         test: /\.(js|jsx)$/,
@@ -65,8 +65,8 @@ module.exports = ({production = false} = {}) => {
     plugins: [
       new optimize.CommonsChunkPlugin({
         name: 'vendor',
-        filename,
-        minChunks
+        output: output.filename,
+        minChunks: m => m.resource && m.resource.includes('node_modules')
       }),
       new optimize.CommonsChunkPlugin({
         name: 'manifest',
@@ -93,7 +93,7 @@ module.exports = ({production = false} = {}) => {
         cacheId: `${pkg.name}-${pkg.version}`,
         stripPrefix: './build',
         staticFileGlobs: [
-          join(path, '**/*')
+          join(output.path, '**/*')
         ],
         runtimeCaching: [{
           urlPattern: /https:\/\/.+.firebaseio.com/,
