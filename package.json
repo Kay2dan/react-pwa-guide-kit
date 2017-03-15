@@ -7,11 +7,14 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server",
+    "start:ssr": "node server.js",
     "build": "rm -rf build && webpack --env.production",
+    "build:ssr": "rm -rf build && webpack --env.production --env.ssr",
     "build:debug": "rm -rf build && webpack",
     "deploy": "yarn run build && firebase deploy"
   },
   "dependencies": {
+    "ejs": "^2.5.6",
     "firebase": "^3.6.9",
     "material-ui": "^0.16.7",
     "react": "^15.4.2",

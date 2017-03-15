@@ -10,7 +10,7 @@ const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const dotenvSafe = require('dotenv-safe').load();
 const pkg = require('./package.json');
 
-module.exports = ({production = false} = {}) => {
+module.exports = ({production = false, ssr = false} = {}) => {
   process.env.NODE_ENV = production ? 'production' : 'development';
 
   const output = {
@@ -54,11 +54,7 @@ module.exports = ({production = false} = {}) => {
       loaders: [{
         test: /\.(js|jsx)$/,
         include,
-        loaders: 'babel-loader',
-        options: {
-          presets: [['es2015', {modules: false}], "react-app"],
-          plugins: ['syntax-dynamic-import']
-        }
+        loaders: 'babel-loader'
       }]
     },
     devtool,
@@ -75,8 +71,10 @@ module.exports = ({production = false} = {}) => {
       }),
       new DefinePlugin(defined),
       new HtmlWebpackPlugin(Object.assign({
-        template: './public/index.html',
-        favicon: './public/favicon.ico', 
+        filename: `index.${ssr ? 'ejs' : 'html'}`,
+        template: './src/views/index.ejs',
+        favicon: './public/favicon.ico',
+        markup: `<div id="app">${ssr ? '<%- markup %>' : ''}</div>`
       },{
         minify
       })),

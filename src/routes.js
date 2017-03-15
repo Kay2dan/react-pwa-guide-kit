@@ -2,8 +2,11 @@ import React from 'react';
 import {Route, IndexRoute, hashHistory} from 'react-router';
 import AppShell from './components/AppShell';
 
-function load(cb) {
-  return m => cb(null, m.default || m);
+// Polyfill require.ensure
+if (typeof require.ensure !== 'function') {
+  require.ensure = function(d, c) {
+    c(require)
+  };
 }
 
 const routes = {
@@ -12,20 +15,34 @@ const routes = {
   childRoutes: [{
     getIndexRoute: (_, cb) => {
       cb(null, {
-        getComponent: (_, cb) => {import('./components/Greeting').then(load(cb))}
-      })
+        getComponent: (_, cb) => {
+          require.ensure([], require => {
+            cb(null, require('./components/Greeting').default)
+          }, 'greeting');
+        }
+      });
     }
   }, {
     path: 'users',
-    getComponent(_, cb) {import('./components/Users').then(load(cb))},
-    childRoutes: [{
-    }]
+    getComponent: (_, cb) => {
+      require.ensure([], require => {
+        cb(null, require('./components/Users').default)
+      }, 'users');
+    }
   }, {
     path: 'users/:id',
-    getComponent(_, cb) {import('./components/User').then(load(cb))}
+    getComponent: (_, cb) => {
+      require.ensure([], require => {
+        cb(null, require('./components/Users').default)
+      }, 'users');
+    }
   }, {
     path: 'notification',
-    getComponent(_, cb) {import('./components/Notification').then(load(cb))}
+    getComponent: (_, cb) => {
+      require.ensure([], require => {
+        cb(null, require('./components/Notification').default)
+      }, 'notification');
+    }
   }]
 };
 
