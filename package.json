@@ -1,8 +1,7 @@
 {
-  "name": "react-pwa-hello-world",
+  "name": "react-pwa-guide-kit",
   "version": "1.0.0",
-  "description": "Progressive Web App with React that say Hello!",
-  "main": "index.js",
+  "description": "Progressive Web App with React.js",
   "author": "ragingwind",
   "license": "MIT",
   "scripts": {

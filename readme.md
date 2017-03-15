@@ -1,21 +1,20 @@
-# react-pwa-starter-kit
+# react-pwa-guide-kit
 
-> Progressive Web App Starter Kit with React.js is an designed to discover and understand how to build up Progressive Web Apps features by React.js development environments. Customized and opinionated tools and build process are optimized to achive high-performed web application audited by strict auditor, [Lighthsuse](https://github.com/GoogleChrome/lighthouse). Moreover, this starte kit is backed by Firebase for hosting, realtime database, and also push notification.
+> This is a guide kit is designed to show how to make a Progressive Web App(PWA) and PWA features in React.js development environments. Customized and opinionated tools and build process are optimized to achive high-performed web application which is audited by strict auditor, [Lighthsuse](https://github.com/GoogleChrome/lighthouse). Moreover, this guide kit is also backed by Firebase for hosting, realtime database, and also push notification. Please show how it is [working on firebase hosting](https://react-pwa-hello-world.firebaseapp.com/#/)
 
 # Features
 
-- Material Design and AppShell: Responsive, fit any form factor, desktop but first is mobile. AppShell architecture implemented wearing material design got bressed by [material-ui.com](https://material-ui.com)|
-- ES6 via Babel: You can use ES6 feature with same babel-preset to [create-react-app](https://github.com/facebookincubator/create-react-app) and dynamic module importing
-- Webpack 2
-  - Remarkable configurations: Webpack configuration file has been written in configurable, optimzied and easy settings
-  - Optimized Progressive Web App: You can check them of optimized bundling for PWA including code-splitting, multiple chunk and [preload](https://www.npmjs.com/package/preload-webpack-plugin)
-  - Developing Progressive Web App: As developing, reloading changes instantly by webpack-dev-server, also it is working well with [service worker](https://github.com/ragingwind/sw-precache-webpack-dev-plugin)
-- HTTPS: Deploying to Firebase Hosting to run perfectly on HTTPS with PWA features
-- Web Push: Web Push demo also is branded at this app by Firebase Push Messaging
-- Service Worker: Generating service worker script is completly intergrated in build process with Webpack 2 and plugins
-- Web Manifest: Have a look how to installable webapp work by Web Manifest
-- Realtime Database: We featured firebase to show PWA how to work with fetched data and cached data via service worker
-- Server Side Rendering: Presenting intial page in short time is an important issue. This starter kit includes 
+- **Material Design and AppShell**: Responsive, fit any form factor, desktop but the first is mobile. AppShell architecture implemented wearing material design got bressed by [material-ui.com](https://material-ui.com)
+- **ES6 via Babel**: You can use ES6 feature with same babel-preset to [create-react-app](https://github.com/facebookincubator/create-react-app) and dynamic module importing
+- **Webpack 2**
+  - **Remarkable configurations**: Webpack configuration file has been written in configurable, optimzied and easy settings
+  - **Developing Progressive Web App**: You can check them of optimized bundling for PWA including code-splitting, multiple chunk and [preload](https://www.npmjs.com/package/preload-webpack-plugin). As developing, reloading changes instantly by webpack-dev-server, also it is working well with [service worker](https://github.com/ragingwind/sw-precache-webpack-dev-plugin)
+- **HTTPS**: Deploying to Firebase Hosting to run perfectly on HTTPS with PWA features
+- **Web Push**: Web Push demo also is branded at this app by Firebase Push Messaging
+- **Service Worker**: Generating service worker scripts is completly intergrated in build process with Webpack 2 and plugins
+- **Web Manifest**: Have a look how to installable webapp work by Web Manifest
+- **Realtime Database**: We featured firebase to show PWA how to work with fetched data and cached data via service worker
+- **Server Side Rendering**: Presenting intial page in short time is an important issue. This guide kit includes 
 simple server side code for demonstration. Buidling PWA for Server Side Rendering version landed You can take a look what is different between both of versions
 
 # Getting Started
@@ -73,9 +72,10 @@ You need to check that configuration again. You must have a project on firebase,
 # deploy to firebase
 yarn deploy
 ```
-# Working Demo
 
-This PWA is [running on firebase hosting](https://react-pwa-hello-world.firebaseapp.com/#/)
+## Testing Firebase Cloud Messaging for Push
+
+This guide-kit use Push Messaging built on top of Firebase Cloud Messaging. `Notificaiotn` page will show you peer token to send push message to current opened tab. To do this, [`fcm-cli`](https://github.com/ragingwind/fcm-cli) is a really simple and powerful tool for testing FCM on terminal. [This video will cover how to deal with fcm-cli and FCM](https://goo.gl/Jx4poC) (*Korean*)
 
 # Lighthouse Audit Result
 
