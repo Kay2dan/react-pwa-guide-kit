@@ -79,6 +79,9 @@ module.exports = ({production = false, ssr = false} = {}) => {
         minify
       })),
       new PreloadWebpackPlugin({
+        rel: 'preload',
+        as: 'script',
+        include: ['greeting'],
         fileBlacklist: [/\.map./]
       }),
       new CopyWebpackPlugin([{
