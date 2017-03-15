@@ -19,8 +19,8 @@ module.exports = ({production = false, ssr = false} = {}) => {
     chunkFilename: production ? '[name].[chunkhash].js' : '[name].js'
   };
   const include = resolve(__dirname, './src');
-  const sourceMap =  production ? 'cheap-module-source-map' : false;
-  const devtool = production ? 'cheap-module-source-map' : false;
+  const sourceMap =  production ? 'cheap-module-source-map' : 'source-map';
+  const devtool = production ? 'cheap-module-source-map' : 'source-map';
 
   const defined = {
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
@@ -79,9 +79,6 @@ module.exports = ({production = false, ssr = false} = {}) => {
         minify
       })),
       new PreloadWebpackPlugin({
-        rel: 'preload',
-        as: 'script',
-        include: ['greeting'],
         fileBlacklist: [/\.map./]
       }),
       new CopyWebpackPlugin([{
