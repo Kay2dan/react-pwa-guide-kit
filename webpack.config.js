@@ -97,7 +97,7 @@ module.exports = ({production = false, ssr = false} = {}) => {
         ],
         runtimeCaching: [{
           urlPattern: /https:\/\/.+.firebaseio.com/,
-          handler: 'cacheFirst'
+          handler: 'networkFirst'
         }],
         logger: function () {},
         filename: 'sw.js',

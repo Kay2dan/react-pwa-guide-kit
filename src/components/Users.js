@@ -17,13 +17,19 @@ class Users extends Component {
 		super(props);
 
 		this.state = {
-			users: usersDatabase().data(),
+			users: Users.database().data(),
 			dialog: false
 		};
 	}
+	
+	static database() {
+		 return usersDatabase({
+			 databaseURL: FIREBASE_CONFIG.databaseURL
+		 });
+	}
 
 	componentWillMount() {
-		usersDatabase().get()
+		Users.database().get()
 			.then(users => this.setState({users}))
 			.catch(err => {
 			console.log(err);
@@ -49,9 +55,9 @@ class Users extends Component {
 			return;
 		}
 
-		usersDatabase().post(user).then(users => {
+		Users.database().post(user).then(users => {
 			this.setState({
-				users: usersDatabase().data(),
+				users: Users.database().data(),
 				dialog: false
 			});
 		}).catch(err => {

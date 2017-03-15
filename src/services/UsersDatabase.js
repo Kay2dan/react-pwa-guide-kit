@@ -1,13 +1,13 @@
 class UsersDatabase {
-	constructor() {
-		this.baseURL = FIREBASE_CONFIG.databaseURL;
+	constructor(opts) {
+		this.databaseURL = opts.databaseURL;
 		this.users = {};
 	}
 
 	data = (id) => id ? this.users[id] : this.users;
 
 	get = () => {
-		return fetch(`${this.baseURL}?orderBy="name"`).then(res => {
+		return fetch(`${this.databaseURL}?orderBy="name"`).then(res => {
 			if (res.status !== 200) {
 				throw new Error(res.statusText);
 			}
@@ -17,7 +17,7 @@ class UsersDatabase {
 	}
 
 	post = (user = {}) => {
-		return fetch(this.baseURL, {
+		return fetch(this.databaseURL, {
 			method: 'POST',
 			body: JSON.stringify(user)
 		}).then(res => {
@@ -35,9 +35,9 @@ class UsersDatabase {
 
 let usersDatabaseSingleton = null;
 
-export default function () {
+export default function (opts) {
 	if (!usersDatabaseSingleton) {
-		usersDatabaseSingleton = new UsersDatabase();
+		usersDatabaseSingleton = new UsersDatabase(opts);
 	}
 	
 	return usersDatabaseSingleton;
